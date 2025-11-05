@@ -1,0 +1,342 @@
+// This is your Prisma schema file for ONE MEDI
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+  VENDOR
+  DOCTOR
+  LAB_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum AddressType {
+  HOME
+  WORK
+  OTHER
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+  DISCONTINUED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  COD
+  CARD
+  UPI
+  WALLET
+  NET_BANKING
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingType {
+  LAB_TEST
+  SCAN
+  DOCTOR_CONSULTATION
+  HOME_CARE
+}
+
+enum CollectionType {
+  HOME_COLLECTION
+  LAB_VISIT
+}
+
+// Core Models
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  phone         String?     @unique
+  firstName     String
+  lastName      String
+  password      String
+  role          Role        @default(USER)
+  status        UserStatus  @default(ACTIVE)
+  avatar        String?
+  dateOfBirth   DateTime?
+  gender        Gender?
+  
+  // Relations
+  addresses     Address[]
+  orders        Order[]
+  bookings      Booking[]
+  reviews       Review[]
+  prescriptions Prescription[]
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  @@map("users")
+}
+
+model Address {
+  id            String      @id @default(uuid())
+  userId        String
+  type          AddressType @default(HOME)
+  fullName      String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  state         String
+  pincode       String
+  isDefault     Boolean     @default(false)
+  
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders        Order[]
+  bookings      Booking[]
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  @@map("addresses")
+}
+
+model Product {
+  id              String        @id @default(uuid())
+  name            String
+  slug            String        @unique
+  description     String?
+  category        String
+  brand           String?
+  manufacturer    String?
+  composition     String?
+  price           Float
+  mrp             Float
+  discount        Float?
+  stock           Int           @default(0)
+  unit            String        // e.g., "Strip of 15 tablets"
+  requiresPrescription Boolean   @default(false)
+  images          String[]
+  status          ProductStatus @default(ACTIVE)
+  tags            String[]
+  
+  // Relations
+  orderItems      OrderItem[]
+  reviews         Review[]
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@map("products")
+}
+
+model Order {
+  id              String        @id @default(uuid())
+  orderNumber     String        @unique
+  userId          String
+  addressId       String
+  
+  subtotal        Float
+  discount        Float         @default(0)
+  deliveryCharge  Float         @default(0)
+  tax             Float         @default(0)
+  total           Float
+  
+  status          OrderStatus   @default(PENDING)
+  paymentMethod   PaymentMethod @default(COD)
+  paymentStatus   PaymentStatus @default(PENDING)
+  
+  notes           String?
+  
+  // Relations
+  user            User          @relation(fields: [userId], references: [id])
+  address         Address       @relation(fields: [addressId], references: [id])
+  items           OrderItem[]
+  payment         Payment?
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@map("orders")
+}
+
+model OrderItem {
+  id              String    @id @default(uuid())
+  orderId         String
+  productId       String
+  
+  quantity        Int
+  price           Float
+  discount        Float     @default(0)
+  total           Float
+  
+  // Relations
+  order           Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product         Product   @relation(fields: [productId], references: [id])
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("order_items")
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  orderId           String        @unique
+  bookingId         String?       @unique
+  
+  amount            Float
+  status            PaymentStatus @default(PENDING)
+  method            PaymentMethod
+  
+  transactionId     String?       @unique
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  
+  metadata          Json?
+  
+  // Relations
+  order             Order?        @relation(fields: [orderId], references: [id])
+  booking           Booking?      @relation(fields: [bookingId], references: [id])
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  @@map("payments")
+}
+
+model LabTest {
+  id              String    @id @default(uuid())
+  name            String
+  slug            String    @unique
+  description     String?
+  category        String
+  price           Float
+  parameters      String[]  // Array of test parameters
+  preparation     String?   // Preparation instructions
+  reportTime      String?   // e.g., "Same day", "24 hours"
+  isPopular       Boolean   @default(false)
+  
+  // Relations
+  bookings        Booking[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("lab_tests")
+}
+
+model Booking {
+  id              String         @id @default(uuid())
+  bookingNumber   String         @unique
+  userId          String
+  addressId       String?
+  
+  type            BookingType
+  status          BookingStatus  @default(PENDING)
+  
+  // Lab Test specific
+  labTestId       String?
+  collectionType  CollectionType?
+  scheduledDate   DateTime?
+  scheduledTime   String?
+  
+  price           Float
+  paymentMethod   PaymentMethod  @default(COD)
+  paymentStatus   PaymentStatus  @default(PENDING)
+  
+  notes           String?
+  
+  // Relations
+  user            User           @relation(fields: [userId], references: [id])
+  address         Address?       @relation(fields: [addressId], references: [id])
+  labTest         LabTest?       @relation(fields: [labTestId], references: [id])
+  payment         Payment?
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@map("bookings")
+}
+
+model Review {
+  id            String    @id @default(uuid())
+  userId        String
+  productId     String
+  
+  rating        Int       // 1-5
+  title         String?
+  comment       String?
+  isVerified    Boolean   @default(false)
+  
+  // Relations
+  user          User      @relation(fields: [userId], references: [id])
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([userId, productId])
+  @@map("reviews")
+}
+
+model Prescription {
+  id            String    @id @default(uuid())
+  userId        String
+  
+  imageUrl      String
+  notes         String?
+  isVerified    Boolean   @default(false)
+  verifiedAt    DateTime?
+  verifiedBy    String?
+  
+  // Relations
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("prescriptions")
+}
