@@ -346,9 +346,9 @@ function CheckoutContent() {
 
                 <div className="space-y-3">
                   {[
-                    { id: 'COD', label: 'Cash on Delivery', icon: Truck, desc: 'Pay when you receive' },
-                    { id: 'UPI', label: 'UPI Payment', icon: Wallet, desc: 'Google Pay, PhonePe, Paytm' },
-                    { id: 'CARD', label: 'Card Payment', icon: CreditCard, desc: 'Credit/Debit cards' },
+                    { id: 'COD', label: 'Cash on Delivery', icon: Truck, desc: 'Pay when you receive your order' },
+                    { id: 'UPI', label: 'UPI Payment', icon: Smartphone, desc: 'Google Pay, PhonePe, Paytm & more' },
+                    { id: 'CARD', label: 'Card Payment', icon: CreditCard, desc: 'Credit & Debit cards via Razorpay' },
                   ].map((method) => {
                     const Icon = method.icon;
                     return (
