@@ -91,3 +91,15 @@ prisma/migrations
 *.env
 *.env.*
 .pnpm-store/
+-e 
+# Environment files
+*.env
+*.env.*
+-e 
+# Environment files
+*.env
+*.env.*
+-e 
+# Environment files
+*.env
+*.env.*
