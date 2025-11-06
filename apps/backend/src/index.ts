@@ -9,6 +9,7 @@ import healthRoutes from './routes/health.routes';
 import productRoutes from './routes/product.routes';
 import labTestRoutes from './routes/labtest.routes';
 import orderRoutes from './routes/order.routes';
+import paymentRoutes from './routes/payment.routes';
 
 // Load environment variables
 dotenv.config();
