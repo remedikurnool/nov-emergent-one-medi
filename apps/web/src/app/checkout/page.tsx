@@ -23,6 +23,7 @@ function CheckoutContent() {
   const router = useRouter();
   const { user } = useAuth();
   const { items, getTotalPrice, clearCart } = useCart();
+  const { loaded, setLoaded, openRazorpay } = useRazorpay();
   const [step, setStep] = useState(1); // 1: Address, 2: Payment, 3: Review
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'CARD' | 'UPI'>('COD');
