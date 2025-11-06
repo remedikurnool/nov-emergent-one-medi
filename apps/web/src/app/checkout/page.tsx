@@ -87,9 +87,6 @@ function CheckoutContent() {
   const handlePlaceOrder = async () => {
     setPlacing(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
       const orderData = {
         userId: user?.id || 'demo-user',
         addressId: selectedAddress,
@@ -105,14 +102,69 @@ function CheckoutContent() {
         total,
       };
 
-      // In future: const response = await api.orders.create(orderData);
-      
-      clearCart();
-      router.push('/orders/success');
+      // If online payment, initiate Razorpay
+      if (paymentMethod === 'CARD' || paymentMethod === 'UPI') {
+        // Create Razorpay order
+        const paymentOrderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/create-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: total }),
+        });
+        const paymentOrderData = await paymentOrderRes.json();
+
+        if (!paymentOrderData.success) {
+          throw new Error('Failed to create payment order');
+        }
+
+        // Open Razorpay checkout
+        openRazorpay({
+          amount: total,
+          orderId: paymentOrderData.data.id,
+          name: 'ONE MEDI',
+          description: `Order for ${items.length} items`,
+          prefill: {
+            name: user?.user_metadata?.first_name + ' ' + user?.user_metadata?.last_name,
+            email: user?.email,
+            contact: user?.user_metadata?.phone,
+          },
+          onSuccess: async (response) => {
+            // Verify payment on backend
+            const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/verify-payment`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: paymentOrderData.data.id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+              }),
+            });
+            const verifyData = await verifyRes.json();
+
+            if (verifyData.success) {
+              // In future: await api.orders.create(orderData);
+              clearCart();
+              router.push('/orders/success');
+            } else {
+              alert('Payment verification failed');
+            }
+          },
+          onFailure: (error) => {
+            console.error('Payment failed:', error);
+            alert('Payment failed. Please try again.');
+            setPlacing(false);
+          },
+        });
+        setPlacing(false);
+      } else {
+        // COD - direct order placement
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // In future: await api.orders.create(orderData);
+        clearCart();
+        router.push('/orders/success');
+      }
     } catch (error) {
       console.error('Order placement failed:', error);
       alert('Failed to place order. Please try again.');
-    } finally {
       setPlacing(false);
     }
   };
