@@ -117,6 +117,10 @@ export function Header() {
         </div>
       </header>
 
+      {/* Search Dropdown */}
+      {showSearch && (
+        <div className=\"fixed top-16 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg z-40 p-4\">\n          <form onSubmit={handleSearch} className=\"container mx-auto max-w-2xl\">\n            <div className=\"relative\">\n              <Search className=\"absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400\" />\n              <input\n                type=\"text\"\n                value={searchQuery}\n                onChange={(e) => setSearchQuery(e.target.value)}\n                placeholder=\"Search medicines, lab tests, doctors...\"\n                className=\"w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary\"\n                autoFocus\n              />\n            </div>\n          </form>\n        </div>\n      )}
+
       {/* Auth Modal */}
       {showAuthModal && (
         <AuthModal
