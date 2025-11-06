@@ -171,6 +171,7 @@ function CheckoutContent() {
 
   return (
     <AppLayout>
+      <RazorpayScript onLoad={() => setLoaded(true)} />
       <div className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Checkout</h1>
 
