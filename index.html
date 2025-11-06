@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE MEDI - Healthcare Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.3);
+        }
+
+        .logo-text {
+            font-size: 36px;
+            font-weight: 800;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(20, 184, 166, 0.5);
+            box-shadow: 0 20px 60px rgba(20, 184, 166, 0.2);
+        }
+
+        .app-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .app-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #fff;
+        }
+
+        .app-description {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .app-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #14b8a6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .app-link:hover {
+            color: #10a898;
+        }
+
+        .app-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .features h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .status {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .app-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <span class="logo-text">OM</span>
+        </div>
+
+        <!-- Status Badge -->
+        <div class="status">
+            ✅ All Systems Operational
+        </div>
+
+        <!-- Header -->
+        <h1>ONE MEDI</h1>
+        <p class="subtitle">Comprehensive Healthcare E-Commerce Platform</p>
+
+        <!-- Apps Grid -->
+        <div class="apps-grid">
+            <!-- Customer App -->
+            <a href="http://localhost:3000" class="app-card" target="_blank">
+                <span class="app-icon">🛍️</span>
+                <h3 class="app-title">Customer App</h3>
+                <p class="app-description">
+                    Browse medicines, book lab tests, shop healthcare products, and manage orders
+                </p>
+                <span class="app-link">
+                    Open Customer App →
+                </span>
+                <div class="app-badge">Port 3000</div>
+            </a>
+
+            <!-- Admin Dashboard -->
+            <a href="http://localhost:3001" class="app-card" target="_blank">
+                <span class="app-icon">⚙️</span>
+                <h3 class="app-title">Admin Dashboard</h3>
+                <p class="app-description">
+                    Manage products, orders, users, analytics, and platform settings
+                </p>
+                <span class="app-link">
+                    Open Admin Panel →
+                </span>
+                <div class="app-badge">Port 3001</div>
+            </a>
+
+            <!-- Vendor Dashboard -->
+            <a href="http://localhost:3002" class="app-card" target="_blank">
+                <span class="app-icon">🏪</span>
+                <h3 class="app-title">Vendor Dashboard</h3>
+                <p class="app-description">
+                    Manage products, fulfill orders, track inventory, and view revenue analytics
+                </p>
+                <span class="app-link">
+                    Open Vendor Panel →
+                </span>
+                <div class="app-badge">Port 3002</div>
+            </a>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <h2>🚀 Platform Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Full E-Commerce</div>
+                        <div class="feature-desc">Complete shopping cart, checkout, and order management</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔐</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Authentication</div>
+                        <div class="feature-desc">Supabase auth with secure login/signup</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">💳</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Payment Gateway</div>
+                        <div class="feature-desc">Razorpay integration (COD, UPI, Cards)</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Analytics</div>
+                        <div class="feature-desc">Revenue tracking and performance metrics</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📱</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Responsive Design</div>
+                        <div class="feature-desc">Mobile, tablet, and desktop optimized</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🌙</span>
+                    <div class="feature-text">
+                        <div class="feature-title">Dark Mode</div>
+                        <div class="feature-desc">Complete dark mode support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Info -->
+        <div class="features" style="margin-top: 2rem;">
+            <h2>🔌 Backend API</h2>
+            <p style="color: #94a3b8; margin-bottom: 1rem;">
+                RESTful API with 23+ endpoints
+            </p>
+            <a href="http://localhost:8001/api/v1/health" target="_blank" class="app-link" style="font-size: 1rem;">
+                🔗 API Health Check: http://localhost:8001/api/v1/health
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                <strong>ONE MEDI</strong> - Healthcare Platform<br>
+                Version 1.0.0 | Phases 0-5 Complete ✅<br>
+                Built with Next.js 15, Express.js, Supabase, TypeScript, Tailwind CSS
+            </p>
+            <p style="margin-top: 1rem;">
+                📚 <a href="/PROJECT_SUMMARY.md" style="color: #14b8a6; text-decoration: none;">Documentation</a> | 
+                🏗️ <a href="/ARCHITECTURE.md" style="color: #14b8a6; text-decoration: none;">Architecture</a> | 
+                ⚙️ <a href="/ENV_SETUP.md" style="color: #14b8a6; text-decoration: none;">Setup Guide</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add click tracking
+        document.querySelectorAll('.app-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const appName = this.querySelector('.app-title').textContent;
+                console.log(`🚀 Opening ${appName}...`);
+            });
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey) {
+                switch(e.key) {
+                    case '1':
+                        window.open('http://localhost:3000', '_blank');
+                        break;
+                    case '2':
+                        window.open('http://localhost:3001', '_blank');
+                        break;
+                    case '3':
+                        window.open('http://localhost:3002', '_blank');
+                        break;
+                    case '4':
+                        window.open('http://localhost:8001/api/v1/health', '_blank');
+                        break;
+                }
+            }
+        });
+
+        // Show keyboard shortcuts hint
+        setTimeout(() => {
+            const hint = document.createElement('div');
+            hint.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(20, 184, 166, 0.1);
+                border: 1px solid rgba(20, 184, 166, 0.3);
+                color: #14b8a6;
+                padding: 10px 15px;
+                border-radius: 10px;
+                font-size: 12px;
+                backdrop-filter: blur(10px);
+            `;
+            hint.innerHTML = '💡 Keyboard Shortcuts: Alt+1/2/3/4';
+            document.body.appendChild(hint);
+
+            setTimeout(() => {
+                hint.style.opacity = '0';
+                hint.style.transition = 'opacity 1s';
+                setTimeout(() => hint.remove(), 1000);
+            }, 5000);
+        }, 2000);
+    </script>
+</body>
+</html>
