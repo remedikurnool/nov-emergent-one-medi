@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Plus, Check, CreditCard, Wallet, Truck } from 'lucide-react';
+import { MapPin, Plus, Check, CreditCard, Wallet, Truck, Smartphone } from 'lucide-react';
 import { useCart } from '@/lib/store/cart-store';
 import { useAuth } from '@/lib/auth-provider';
 import { ProtectedRoute } from '@/components/protected-route';
 import { AppLayout } from '@/components/app-layout';
 import { api } from '@/lib/api';
+import { useRazorpay, RazorpayScript } from '@/lib/use-razorpay';
 
 export default function CheckoutPage() {
   return (
