@@ -54,6 +54,14 @@ export function Header() {
             </div>
             
             <div className="flex items-center gap-3 md:gap-4">
+              {/* Search Button - Desktop */}
+              <button
+                onClick={() => setShowSearch(!showSearch)}
+                className="hidden md:flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              >
+                <Search className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              </button>
+              
               {/* Auth - Desktop */}
               {user ? (
                 <div className="hidden lg:flex items-center gap-3">
