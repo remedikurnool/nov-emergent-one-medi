@@ -2,20 +2,33 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, MapPin, ShoppingCart, Menu, User, LogOut } from 'lucide-react';
 import { useCart } from '@/lib/store/cart-store';
 import { useAuth } from '@/lib/auth-provider';
 import { AuthModal } from './auth-modal';
 
 export function Header() {
+  const router = useRouter();
   const cartItems = useCart((state) => state.getTotalItems());
   const { user, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleAuthClick = (mode: 'login' | 'signup') => {
     setAuthMode(mode);
     setShowAuthModal(true);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch(false);
+      setSearchQuery('');
+    }
   };
 
   return (
