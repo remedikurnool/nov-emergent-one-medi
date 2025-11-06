@@ -51,6 +51,7 @@ app.use(`${API_PREFIX}/${API_VERSION}/products`, productRoutes);
 app.use(`${API_PREFIX}/${API_VERSION}/lab-tests`, labTestRoutes);
 app.use(`${API_PREFIX}/${API_VERSION}/orders`, orderRoutes);
 app.use(`${API_PREFIX}/${API_VERSION}/payment`, paymentRoutes);
+app.use(`${API_PREFIX}/${API_VERSION}/bookings`, bookingRoutes);
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
