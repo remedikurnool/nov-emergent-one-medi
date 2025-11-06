@@ -88,6 +88,38 @@ export const api = {
       }),
   },
 
+  // Bookings
+  bookings: {
+    getAll: (params?: Record<string, string>) =>
+      apiClient('/bookings', { params }),
+    getById: (id: string) => apiClient(`/bookings/${id}`),
+    create: (data: any) =>
+      apiClient('/bookings', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    updateStatus: (id: string, status: string) =>
+      apiClient(`/bookings/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ status }),
+      }),
+  },
+
+  // Payment
+  payment: {
+    createOrder: (amount: number) =>
+      apiClient('/payment/create-order', {
+        method: 'POST',
+        body: JSON.stringify({ amount }),
+      }),
+    verifyPayment: (orderId: string, paymentId: string, signature: string) =>
+      apiClient('/payment/verify-payment', {
+        method: 'POST',
+        body: JSON.stringify({ orderId, paymentId, signature }),
+      }),
+    getKey: () => apiClient('/payment/key'),
+  },
+
   // Health
   health: () => apiClient('/health'),
 };
