@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const PORT = 3003;
+const PORT = 3000;
 
 // Serve static files from root
 app.use(express.static(__dirname));
@@ -19,12 +19,12 @@ app.listen(PORT, () => {
 ║                                                            ║
 ║            🏥 ONE MEDI - Platform Router                   ║
 ║                                                            ║
-║  ✅ Routing page running on http://localhost:${PORT}      ║
+║  ✅ Routing page running on http://localhost:${PORT}       ║
 ║                                                            ║
 ║  Click to access:                                          ║
-║  🛍️  Customer App:     http://localhost:3000              ║
-║  ⚙️  Admin Dashboard:  http://localhost:3001              ║
-║  🏪  Vendor Dashboard: http://localhost:3002              ║
+║  🛍️  Customer App:     http://localhost:3001              ║
+║  ⚙️  Admin Dashboard:  http://localhost:3002              ║
+║  🏪  Vendor Dashboard: http://localhost:3003              ║
 ║  🔌  Backend API:      http://localhost:8001              ║
 ║                                                            ║
 ╚════════════════════════════════════════════════════════════╝
